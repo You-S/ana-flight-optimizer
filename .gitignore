@@ -1,0 +1,16 @@
+# Environments
+venv/
+env/
+.env
+
+# Python caching
+__pycache__/
+*.pyc
+
+# Data files (we use CSV now, maybe ignore original xlsx if it's there)
+# If you want to commit ANA_mile.xlsx, remove this line
+*.xlsx
+
+# OS generated files
+.DS_Store
+Thumbs.db
