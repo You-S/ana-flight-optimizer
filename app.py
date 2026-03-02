@@ -170,8 +170,69 @@ def apply_aptitude_styles(val):
 
 
 def main():
-    st.set_page_config(page_title="Antigravity ANA PP Simulator", layout="wide")
-    st.title("✈️ ANA International PP & Mile Simulator")
+    st.set_page_config(page_title="ANA国際線シミュレーター", layout="wide")
+    
+    # Custom CSS for ANA Brand Colors
+    st.markdown("""
+        <style>
+        /* ANA Brand Colors - Light Mode Defaults */
+        :root {
+            --triton-blue: #002776;
+            --mohican-blue: #00A0E9;
+            --light-blue-bg: #F0F8FF;
+        }
+        
+        /* Dark Mode Adjustments */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --triton-blue: #66B2FF; /* Lighter sky blue for readability in dark mode */
+                --mohican-blue: #33B5E5; 
+                --light-blue-bg: #0D1623; /* Dark slate background for sidebar */
+            }
+        }
+
+        /* Text Headers */
+        h1, h2, h3 {
+            color: var(--triton-blue) !important;
+        }
+        /* Main Accent Border */
+        hr {
+            border-top: 3px solid var(--mohican-blue) !important;
+            margin-top: 0.5em !important;
+            margin-bottom: 1.5em !important;
+        }
+        /* Colored Info Boxes */
+        div[data-testid="stExpander"] summary {
+            color: var(--triton-blue);
+            font-weight: bold;
+        }
+        /* Subtle Sidebar */
+        [data-testid="stSidebar"] {
+            background-color: var(--light-blue-bg);
+            border-right: 1px solid var(--mohican-blue);
+        }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # Header section with title overlay on image
+    import base64
+    try:
+        with open("ana_wing_photo.jpg", "rb") as f:
+            img_b64 = base64.b64encode(f.read()).decode()
+        
+        st.markdown(f"""
+            <div style="position: relative; border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
+                <img src="data:image/jpeg;base64,{img_b64}" style="width: 100%; display: block;">
+                <div style="position: absolute; top: 10%; right: 5%; text-align: right; text-shadow: 2px 2px 8px rgba(0,0,0,0.8), 0px 0px 15px rgba(0,0,0,0.5);">
+                    <div style="color: #FFFFFF !important; font-size: clamp(1.8rem, 4vw, 3.5rem); font-weight: 800; margin-bottom: 0; line-height: 1.2; letter-spacing: 0.05em;">✈️ ANA 国際線</div>
+                    <div style="color: #FFFFFF !important; font-size: clamp(1.8rem, 4vw, 3.5rem); font-weight: 800; margin-top: 0; line-height: 1.2; letter-spacing: 0.05em;">PP & Mile Simulator</div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+    except Exception:
+        # Fallback if image is missing
+        st.title("✈️ ANA 国際線\nPP & Mile Simulator")
+        
     st.markdown("---")
 
     # データとシミュレーターのロード
@@ -203,7 +264,7 @@ def main():
     # ボーナスは高い方が優先して適用される
     final_bonus_rate = max(status_rate, card_rate)
 
-    st.sidebar.info(f"適用ボーナス率: **{int(final_bonus_rate * 100)}%**\n\n(ステイタス: {int(status_rate*100)}% / カード: {int(card_rate*100)}%)")
+    st.sidebar.info(f"適用ボーナス率: **{int(round(final_bonus_rate * 100))}%**\n\n(ステイタス: {int(round(status_rate*100))}% / カード: {int(round(card_rate*100))}%)")
 
     # === メイン画面：ルート比較 ===
     st.subheader("📊 Route Comparison (修行ルート比較)")
